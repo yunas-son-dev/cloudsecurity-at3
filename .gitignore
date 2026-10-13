@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local secrets and config - never commit
+.env
+*.pem
+
+# Local runtime data
+local_uploads/
+*.sqlite
+*.sqlite3
+*.db
+
+# Build output
+dist/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
