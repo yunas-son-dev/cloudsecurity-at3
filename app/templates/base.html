@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Namawin{% endblock %} - Namawin (demo)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <strong>Namawin</strong> <span class="muted">fictional demo bank - not a real service</span>
+    <nav>
+      <a href="{{ url_for('transactions.index') }}">Transactions</a>
+      <a href="{{ url_for('documents.index') }}">Documents</a>
+      <a href="{{ url_for('search.index') }}">Search</a>
+      {% if not auth_required %}
+        <span class="badge warn">Auth disabled - acting as demo-user</span>
+      {% elif session.get('email') %}
+        <span>{{ session['email'] }}</span>
+        <a href="{{ url_for('auth.logout') }}">Sign out</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Sign in</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="flash {{ category }}">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
