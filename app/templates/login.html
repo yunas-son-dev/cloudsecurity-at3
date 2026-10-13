@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+{% block content %}
+<h1>Sign in</h1>
+
+{% if stub_mode %}
+  <p class="flash warning">
+    Authentication is disabled (<code>AUTH_REQUIRED=false</code>). Every page acts as
+    <strong>demo-user</strong>. This mode is for local development only.
+  </p>
+  <p><a href="{{ url_for('transactions.index') }}">Continue to transactions</a></p>
+{% else %}
+  <form method="post" action="{{ url_for('auth.login') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required maxlength="254" autocomplete="username">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required maxlength="256" autocomplete="current-password">
+    <button type="submit">Next</button>
+  </form>
+{% endif %}
+{% endblock %}

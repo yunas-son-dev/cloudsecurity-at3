@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Verification code{% endblock %}
+{% block content %}
+<h1>Enter your verification code</h1>
+<form method="post" action="{{ url_for('auth.mfa') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label for="code">6-digit code from your authenticator app</label>
+  <input type="text" id="code" name="code" required inputmode="numeric" pattern="[0-9]{6}"
+         maxlength="6" autocomplete="one-time-code">
+  <button type="submit">Verify</button>
+</form>
+{% endblock %}
