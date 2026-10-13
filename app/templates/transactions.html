@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+<h1>Transactions</h1>
+<p class="muted">
+  Payments above ${{ amount_limit }}, or more than {{ max_per_window }} payments in
+  {{ window_minutes }} minutes, are held for review.
+</p>
+
+<form method="post" action="{{ url_for('transactions.index') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label for="amount">Amount (AUD)</label>
+  <input type="text" id="amount" name="amount" required inputmode="decimal" placeholder="125.50">
+  <label for="recipient">Recipient</label>
+  <input type="text" id="recipient" name="recipient" required maxlength="100" placeholder="Jane Citizen">
+  <button type="submit">Send payment</button>
+</form>
+
+<h2>Your recent payments</h2>
+{% if rows %}
+<table>
+  <tr><th>When (UTC)</th><th>Recipient</th><th>Amount</th><th>Status</th><th>Rule triggered</th></tr>
+  {% for row in rows %}
+  <tr>
+    <td>{{ row.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+    <td>{{ row.recipient }}</td>
+    <td>${{ '%.2f' | format(row.amount) }}</td>
+    <td class="status-{{ row.status }}">{{ row.status }}</td>
+    <td>{{ row.rule_triggered or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No payments yet.</p>
+{% endif %}
+{% endblock %}
