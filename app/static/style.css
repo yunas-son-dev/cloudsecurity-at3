@@ -1,0 +1,21 @@
+/* Deliberately plain. No inline styles anywhere (the CSP blocks them). */
+body { font-family: system-ui, sans-serif; margin: 0; color: #1d2433; background: #f6f7f9; }
+header { background: #123a5e; color: #fff; padding: 0.75rem 1rem; }
+header a, header span { color: #fff; margin-right: 0.75rem; }
+nav { margin-top: 0.4rem; }
+main { max-width: 860px; margin: 1.5rem auto; padding: 0 1rem; }
+.muted { opacity: 0.75; font-size: 0.85rem; }
+.badge { padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.85rem; }
+.warn { background: #b45309; }
+form { background: #fff; padding: 1rem; border: 1px solid #d0d5dd; margin-bottom: 1.5rem; }
+label { display: block; margin: 0.5rem 0 0.2rem; }
+input[type=text], input[type=email], input[type=password], input[type=number] { width: 100%; max-width: 320px; padding: 0.4rem; }
+button { margin-top: 0.75rem; padding: 0.4rem 1rem; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid #d0d5dd; padding: 0.4rem 0.6rem; text-align: left; }
+.flash { padding: 0.6rem 0.8rem; border: 1px solid; }
+.flash.error { background: #fdecea; border-color: #e0a19a; }
+.flash.warning { background: #fff4e5; border-color: #f0c27b; }
+.flash.success, .flash.info { background: #e8f5e9; border-color: #9bcf9f; }
+.status-HELD_FOR_REVIEW { color: #b45309; font-weight: bold; }
+.status-APPROVED { color: #1e7b34; }

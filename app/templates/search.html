@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h1>Help centre search</h1>
+<form method="get" action="{{ url_for('search.index') }}">
+  <label for="q">Search articles</label>
+  <input type="text" id="q" name="q" value="{{ query }}" maxlength="100">
+  <button type="submit">Search</button>
+</form>
+
+{% if query %}
+  {# Jinja auto-escapes {{ query }}, so reflected input cannot inject HTML. #}
+  <h2>Results for "{{ query }}"</h2>
+  {% if results %}
+    {% for article in results %}
+      <h3>{{ article.title }}</h3>
+      <p>{{ article.body }}</p>
+    {% endfor %}
+  {% else %}
+    <p>No results.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

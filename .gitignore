@@ -1,3 +1,40 @@
+# ============================================================
+# NEVER COMMIT: secrets, credentials, Terraform state
+# (also enforced by .githooks/pre-commit)
+# ============================================================
+
+# Environment files (only the placeholder example is allowed)
+.env
+.env.*
+!.env.example
+
+# Keys, certificates and AWS credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+.aws/
+credentials
+*credentials*.csv
+*accessKeys*.csv
+
+# Terraform: state holds account IDs, ARNs and sometimes secrets
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+*.tfvars.json
+!example.tfvars
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
 # Python
 __pycache__/
 *.py[cod]
@@ -5,18 +42,15 @@ __pycache__/
 venv/
 .pytest_cache/
 
-# Local secrets and config - never commit
-.env
-*.pem
-
 # Local runtime data
 local_uploads/
 *.sqlite
 *.sqlite3
 *.db
 
-# Build output
-dist/
+# Build output: only the Elastic Beanstalk bundle is tracked
+dist/*
+!dist/namawin-app.zip
 
 # OS / editor
 .DS_Store

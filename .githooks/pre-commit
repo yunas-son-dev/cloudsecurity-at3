@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Blocks commits that contain secrets or Terraform state.
+# Enable once per clone:  git config core.hooksPath .githooks
+set -euo pipefail
+
+blocked=0
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# 1. File names that must never be committed.
+forbidden_names='(^|/)(\.env(\..*)?|.*\.tfstate(\..*)?|.*\.tfvars(\.json)?|.*\.tfplan|.*\.pem|.*\.key|.*\.p12|.*\.pfx|id_rsa.*|credentials|.*credentials.*\.csv|.*accessKeys.*\.csv)$'
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  case "$file" in .env.example|*/example.tfvars|example.tfvars) continue ;; esac
+  if echo "$file" | grep -Eq "$forbidden_names"; then
+    echo "BLOCKED: '$file' must never be committed." >&2
+    blocked=1
+  fi
+done <<< "$staged"
+
+# 2. Secret-looking content in the staged changes (text files only).
+secret_patterns='(AKIA|ASIA)[0-9A-Z]{16}|aws_secret_access_key|-----BEGIN [A-Z ]*PRIVATE KEY-----|"password"[[:space:]]*:[[:space:]]*"[^"]+"'
+if git diff --cached -U0 --diff-filter=ACMR -- . ':(exclude).githooks/pre-commit' \
+     | grep -E '^\+' | grep -Eq "$secret_patterns"; then
+  echo "BLOCKED: staged changes look like they contain an AWS key, private key or password." >&2
+  blocked=1
+fi
+
+if [ "$blocked" -ne 0 ]; then
+  echo "Commit aborted. Remove the file/secret (git restore --staged <file>) and try again." >&2
+  exit 1
+fi

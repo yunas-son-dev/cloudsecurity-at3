@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Documents{% endblock %}
+{% block content %}
+<h1>Documents</h1>
+
+<form method="post" action="{{ url_for('documents.index') }}" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label for="file">PDF, PNG, JPG or TXT, up to 5 MB</label>
+  <input type="file" id="file" name="file" required accept=".pdf,.png,.jpg,.txt">
+  <button type="submit">Upload</button>
+</form>
+
+<h2>Your files</h2>
+{% if documents %}
+<table>
+  <tr><th>Name</th><th>Size (bytes)</th><th>Encryption</th><th>KMS key</th></tr>
+  {% for doc in documents %}
+  <tr>
+    <td>{{ doc.name }}</td>
+    <td>{{ doc.size }}</td>
+    <td>{{ doc.encryption }}</td>
+    <td>{{ doc.kms_key or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No files yet.</p>
+{% endif %}
+{% endblock %}
