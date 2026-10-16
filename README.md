@@ -20,6 +20,19 @@ meant to look polished. It is meant to be easy to read and to demonstrate:
 security (`secrets.py`, `db.py`, `transactions.py`, `documents.py`, `search.py`).
 Search for `OWNER:` and `EXTENSION POINT:` comments.
 
+## Keeping secrets out of Git
+
+`.gitignore` excludes `.env` files, keys, AWS credential files and all Terraform
+state (`*.tfstate`, `.terraform/`, `*.tfvars`). A pre-commit hook also blocks those
+files and AWS-key / private-key / password patterns. **Run this once after cloning:**
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The built bundle `dist/namawin-app.zip` is committed so the team can deploy it
+without building. Rebuild it with `./build.sh` whenever the app changes.
+
 ## Pages
 
 | Path | Auth | Purpose |
